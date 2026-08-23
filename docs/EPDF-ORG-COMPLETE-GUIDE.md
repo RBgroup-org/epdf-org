@@ -317,7 +317,7 @@ color/fontSize/font/bold/italic/align/role/id`.
   `backdrop-filter: blur()` frosted glass.
 - **Borders**: per-side widths & colours, per-corner radius, dashed/solid, accent
   stripes; radius survives overlays via clipping.
-- **Motion**: `@keyframes` transforms baked into optional-content frames.
+- **Motion**: `@keyframes` transforms baked into optional-content frames, Runs only in Adobe Acrobat/Reader.
 - **Typography**: embedded TrueType **subsetting**, per-codepoint font fallback,
   letter-spacing, WinAnsi punctuation mapping (bullets, dashes, smart quotes).
 - **Selectors**: type/class/id, attribute (`input[type=email]`), multi-class
