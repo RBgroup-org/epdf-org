@@ -410,7 +410,7 @@ flowchart TB
     U[Untrusted input] --> HTML[HTML/CSS/SVG/XML]
     U --> PDFIN[Imported PDF]
     U --> ASSET[Fonts / images]
-    U --> URLS[Remote url() refs]
+    U --> URLS["Remote url() refs"]
     HTML --> G1[XXE / entity expansion — blocked]
     HTML --> G2[Deep nesting / node count — capped]
     PDFIN --> G3[Decompression bombs — ratio+size caps]
