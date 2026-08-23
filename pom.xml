@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+      ============================================================================
+      epdf-org : single-artifact, ZERO third-party dependency, license-clean PDF
+                 engine (HTML/CSS/XML -> PDF, PDF manipulation, accessibility).
+      ============================================================================
+      Design rules encoded by this POM:
+        * ONE module -> ONE jar. All subsystems (kernel, io, css, html, layout,
+          render, forms, pdfa, pdfua, barcode, svg, redact, optimize, ocr, ...)
+          live in this single artifact under com.epdfengine.rb.org.
+        * NO runtime dependencies. Pure JDK only. This is an organisation-level
+          build where even permissively-licensed OSS is disallowed.
+        * Encryption and digital signing are NOT part of epdf-org (they require
+          cryptography we will not hand-roll here). They live in epdf-global,
+          which plugs into the SPI hooks exposed by this module.
+        * Primary delivery is a SEPARATE thin Spring Boot REST service
+          (epdf-pdf-service) that depends on this jar; Spring Boot never enters
+          this module. That service runs its own JDK, so callers on older
+          runtimes (e.g. a Java 11 Spring Boot 2 app) call the PDF API over HTTP.
+      Author: Rupesh Borse.  Java baseline: 21 (latest LTS) — records, sealed
+      types, and virtual threads for the high-throughput service.
+    -->
+
+    <groupId>com.epdfengine.rb.org</groupId>
+    <artifactId>epdf-org</artifactId>
+    <version>0.1.0-rb</version>
+    <packaging>jar</packaging>
+
+    <name>ePDF Engine (Org)</name>
+    <description>Single-jar, zero-dependency, license-clean HTML/CSS/XML to PDF engine and PDF toolkit.</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>21</maven.compiler.release>
+    </properties>
+
+    <!--
+      Intentionally EMPTY. No third-party runtime or provided dependencies.
+      Tests use a tiny in-house assertion harness under src/test (no JUnit),
+      so the distributable and the build remain 100% third-party free.
+    -->
+    <dependencies/>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <release>${maven.compiler.release}</release>
+                    <compilerArgs>
+                        <arg>-Xlint:all</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <Automatic-Module-Name>com.epdfengine.rb.org</Automatic-Module-Name>
+                            <Implementation-Vendor>Rupesh Borse (ePDF Engine)</Implementation-Vendor>
+                            <Implementation-Title>ePDF Engine (epdf-org)</Implementation-Title>
+                            <License>ePDF Engine License (permissive open source)</License>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

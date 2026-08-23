@@ -1,0 +1,27 @@
+/*
+ * ePDF Engine (epdf-org) — an open-source PDF engine and toolkit.
+ * Part of the ePDF Engine project.  Copyright (c) 2026 Rupesh Borse.
+ *
+ * Licensed under the ePDF Engine License, a permissive open-source license:
+ * you may freely use, copy, modify, and distribute this software (including in
+ * commercial or closed-source products) provided this notice and the LICENSE
+ * file are retained. See LICENSE at the repository root for the full terms.
+ *
+ * Original clean-room work: no third-party or copyleft (AGPL/GPL) code.
+ * Cryptography is intentionally out of scope for epdf-org.
+ *
+ * Author: Rupesh Borse
+ */
+
+Canonical source header for epdf-org
+====================================
+
+Every Java source file in this module MUST begin with the block-comment header
+shown above (the text between the first "/*" and "*/"). It credits the ePDF
+Engine project and its author (Rupesh Borse), states the permissive open-source
+license, and records the clean-room / zero-third-party guarantee.
+
+Rules:
+  * Keep the header on every source file; retain it in copies and forks.
+  * New files: paste the header verbatim as the first lines of the file.
+  * Full terms live in /LICENSE (the ePDF Engine License, permissive open source).

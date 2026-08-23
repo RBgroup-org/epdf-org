@@ -1,0 +1,111 @@
+ePDF ENGINE — LICENSE
+
+Copyright (c) 2026 RBgroup-org
+=================================
+Module      : epdf-org
+Product     : ePDF Engine — a clean-room, zero-dependency PDF engine and toolkit
+              for Java (HTML/CSS/XML/SVG to PDF, PDF read/manipulate/merge,
+              accessibility, optimisation, barcodes, international text).
+Namespace   : com.epdfengine.rb.org
+Author      : Rupesh Borse
+Copyright   : (c) 2026 Rupesh Borse — released under the ePDF Engine License
+Version     : 0.1.0-rb
+Contact     : (owner) Rupesh Borse
+
+------------------------------------------------------------------------------
+PREAMBLE
+------------------------------------------------------------------------------
+This software and its source code (collectively, "the Software") are the
+original work of Rupesh Borse ("the Author") and are released as OPEN SOURCE
+under the permissive terms below. Anyone may use the Software — including in
+commercial and closed-source products — subject only to retaining the notices
+described in section 1. The Author retains copyright as the work's author.
+
+The package namespace segment "rb" denotes the Author (Rupesh Borse).
+
+------------------------------------------------------------------------------
+1. GRANT (PERMISSIVE)
+------------------------------------------------------------------------------
+   Permission is hereby granted, free of charge, to any person or organisation
+   obtaining a copy of the Software, to use, copy, modify, merge, publish,
+   distribute, sublicense, and/or sell copies of the Software, and to permit
+   persons to whom the Software is furnished to do so, subject to section 1.1.
+
+   1.1 ATTRIBUTION & NOTICE. The copyright notice, this permission notice, and
+   the per-file header ("ePDF Engine — Author: Rupesh Borse") shall be retained
+   in all copies or substantial portions of the Software.
+
+------------------------------------------------------------------------------
+2. ZERO THIRD-PARTY POLICY
+------------------------------------------------------------------------------
+   epdf-org contains NO third-party code and depends on NO third-party
+   libraries at runtime (open source or otherwise). This guarantees the
+   Software carries no copyleft (e.g. AGPL/GPL/LGPL), attribution, or other
+   obligations that would otherwise attach to a derived or combined work.
+
+------------------------------------------------------------------------------
+3. NO DERIVATION FROM RESTRICTED SOURCES (CLEAN-ROOM)
+------------------------------------------------------------------------------
+   No part of the Software is copied, transcribed, decompiled, or line-by-line
+   ported from AGPL/GPL/LGPL or any other reciprocally-licensed project. All
+   behaviour is implemented independently from public technical specifications
+   (ISO 32000-1/2, Unicode UAX #9/#14, OpenType, W3C HTML/CSS/SVG, PDF/A,
+   PDF/UA, ICC). Test assets are self-created or public domain.
+
+------------------------------------------------------------------------------
+4. SCOPE BOUNDARY (NO CRYPTOGRAPHY)
+------------------------------------------------------------------------------
+   Cryptographic features (encryption, digital signatures, TSA/LTV/PAdES,
+   ECDSA) are deliberately excluded from epdf-org. They are supplied by a
+   separate build (epdf-global) or by the host application through the Service
+   Provider Interfaces declared in com.epdfengine.rb.org.spi. epdf-org must
+   remain crypto-free and free of any cryptographic dependency.
+
+------------------------------------------------------------------------------
+5. NO ADDITIONAL RESTRICTIONS
+------------------------------------------------------------------------------
+   Beyond the attribution/notice requirement in section 1.1, no further
+   restrictions are placed on use, modification, or redistribution. You may fork
+   the Software and build on it freely. Contributions back to the project are
+   welcome but not required.
+
+------------------------------------------------------------------------------
+6. NAME & ATTRIBUTION
+------------------------------------------------------------------------------
+   "ePDF Engine" identifies this project by Rupesh Borse. You may state that your
+   product "uses ePDF Engine", please do not imply endorsement by the Author
+   without permission.
+
+------------------------------------------------------------------------------
+7. DISCLAIMER OF WARRANTY & LIMITATION OF LIABILITY
+------------------------------------------------------------------------------
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. IN NO EVENT SHALL
+   THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN
+   AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN
+   CONNECTION WITH THE SOFTWARE OR ITS USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+------------------------------------------------------------------------------
+8. CONTRIBUTIONS
+------------------------------------------------------------------------------
+   Contributions are welcome and encouraged. Anyone may propose bug fixes,
+   improvements, or new features (via patches, pull requests, or issues). By
+   submitting a contribution you agree that:
+   (a) it is your own original, clean-room work and contains NO third-party or
+       copyleft (AGPL/GPL/LGPL) code, preserving sections 2 and 3;
+   (b) it is licensed to the project and its users under this same ePDF Engine
+       License (inbound = outbound); and
+   (c) you retain authorship credit for your contribution, which may be recorded
+       in a NOTICE/CONTRIBUTORS file or per-file headers alongside the Author.
+   Accepted contributions become part of the Software under this License. The
+   Author (Rupesh Borse) acts as maintainer and may review, adapt, or decline
+   contributions to protect the project's quality and its clean-room guarantee.
+
+------------------------------------------------------------------------------
+9. GOVERNING TERMS
+------------------------------------------------------------------------------
+   This license constitutes the entire terms concerning the Software. If any
+   provision is held unenforceable, the remaining provisions remain in force.
+
+(c) 2026 Rupesh Borse. "ePDF Engine" is an open-source project by Rupesh Borse.
