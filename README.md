@@ -93,7 +93,7 @@ it's **built‑in HTML/CSS + layout** instead of hand‑placing every glyph.
 
 ```xml
 <dependency>
-  <groupId>com.epdfengine.rb.org</groupId>
+  <groupId>io.github.rbgroup-org</groupId>
   <artifactId>epdf-org</artifactId>
   <version>0.1.0-rb</version>
 </dependency>
