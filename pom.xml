@@ -5,34 +5,63 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!--
-      ============================================================================
-      epdf-org : single-artifact, ZERO third-party dependency, license-clean PDF
-                 engine (HTML/CSS/XML -> PDF, PDF manipulation, accessibility).
-      ============================================================================
-      Design rules encoded by this POM:
-        * ONE module -> ONE jar. All subsystems (kernel, io, css, html, layout,
-          render, forms, pdfa, pdfua, barcode, svg, redact, optimize, ocr, ...)
-          live in this single artifact under com.epdfengine.rb.org.
-        * NO runtime dependencies. Pure JDK only. This is an organisation-level
-          build where even permissively-licensed OSS is disallowed.
-        * Encryption and digital signing are NOT part of epdf-org (they require
-          cryptography we will not hand-roll here). They live in epdf-global,
-          which plugs into the SPI hooks exposed by this module.
-        * Primary delivery is a SEPARATE thin Spring Boot REST service
-          (epdf-pdf-service) that depends on this jar; Spring Boot never enters
-          this module. That service runs its own JDK, so callers on older
-          runtimes (e.g. a Java 11 Spring Boot 2 app) call the PDF API over HTTP.
-      Author: Rupesh Borse.  Java baseline: 21 (latest LTS) — records, sealed
+    ============================================================================
+    epdf-org : single-artifact, ZERO third-party dependency, license-clean PDF
+    engine (HTML/CSS/XML -> PDF, PDF manipulation, accessibility).
+    ============================================================================
+    Design rules encoded by this POM:
+      * ONE module -> ONE jar. All subsystems (kernel, io, css, html, layout,
+        render, forms, pdfa, pdfua, barcode, svg, redact, optimize, ocr, ...)
+        live in this single artifact under com.epdfengine.rb.org.
+      * NO runtime dependencies. Pure JDK only. This is an organisation-level
+        build where even permissively-licensed OSS is disallowed.
+      * Encryption and digital signing are NOT part of epdf-org (they require
+        cryptography we will not hand-roll here). They live in epdf-global,
+        which plugs into the SPI hooks exposed by this module.
+      * Primary delivery is a SEPARATE thin Spring Boot REST service
+        (epdf-pdf-service) that depends on this jar; Spring Boot never enters
+        this module. That service runs its own JDK, so callers on older
+        runtimes (e.g. a Java 11 Spring Boot 2 app) call the PDF API over HTTP.
+
+      Author: Rupesh Borse. Java baseline: 21 (latest LTS) — records, sealed
       types, and virtual threads for the high-throughput service.
     -->
 
-    <groupId>com.epdfengine.rb.org</groupId>
+    <!-- groupId = your verified Maven Central namespace -->
+    <groupId>io.github.rbgroup-org</groupId>
     <artifactId>epdf-org</artifactId>
     <version>0.1.0-rb</version>
     <packaging>jar</packaging>
 
     <name>ePDF Engine (Org)</name>
     <description>Single-jar, zero-dependency, license-clean HTML/CSS/XML to PDF engine and PDF toolkit.</description>
+    <url>https://github.com/RBgroup-org/epdf-org</url>
+
+    <!-- Required by Maven Central: license block -->
+    <licenses>
+        <license>
+            <name>ePDF Engine License</name>
+            <url>https://github.com/RBgroup-org/epdf-org/blob/main/LICENSE</url>
+            <distribution>repo</distribution>
+            <comments>A permissive, MIT-like custom license with additional zero-dependency, clean-room, and attribution terms. See LICENSE file for full text.</comments>
+        </license>
+    </licenses>
+
+    <!-- Required by Maven Central: at least one developer -->
+    <developers>
+        <developer>
+            <name>Rupesh Borse</name>
+            <organization>RBgroup-org</organization>
+            <organizationUrl>https://github.com/RBgroup-org</organizationUrl>
+        </developer>
+    </developers>
+
+    <!-- Required by Maven Central: SCM block -->
+    <scm>
+        <connection>scm:git:https://github.com/RBgroup-org/epdf-org.git</connection>
+        <developerConnection>scm:git:https://github.com/RBgroup-org/epdf-org.git</developerConnection>
+        <url>https://github.com/RBgroup-org/epdf-org</url>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -72,11 +101,88 @@
                             <Automatic-Module-Name>com.epdfengine.rb.org</Automatic-Module-Name>
                             <Implementation-Vendor>Rupesh Borse (ePDF Engine)</Implementation-Vendor>
                             <Implementation-Title>ePDF Engine (epdf-org)</Implementation-Title>
-                            <License>ePDF Engine License (permissive open source)</License>
+                            <License>ePDF Engine License (permissive, custom)</License>
                         </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
+    <!--
+    ============================================================================
+    Maven Central release profile — activate with: mvn clean deploy -P release
+    Produces + signs the sources jar and javadoc jar, then uploads a pending
+    deployment to the Central Publisher Portal.
+    ============================================================================
+    -->
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+
+                    <!-- attach a sources jar -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.3.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals><goal>jar-no-fork</goal></goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- attach a javadoc jar -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.6.3</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals><goal>jar</goal></goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <!-- avoid failing the build over strict javadoc lint issues -->
+                            <doclint>none</doclint>
+                            <failOnError>false</failOnError>
+                        </configuration>
+                    </plugin>
+
+                    <!-- GPG-sign every artifact (jar, sources jar, javadoc jar, pom) -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.2.4</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals><goal>sign</goal></goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- deploy to the Central Publisher Portal -->
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.6.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <!-- keep false on your first deploy so you can review before it goes fully live -->
+                            <autoPublish>false</autoPublish>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
