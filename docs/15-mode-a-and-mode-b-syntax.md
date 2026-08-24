@@ -586,15 +586,15 @@ RenderRequest.of(html).resources(sslSafeLoader).limits(strictLimits).build();
 
 | Area | Status |
 |---|---|
-| CSS `position` / `float` / `top/left/right/bottom` / `z-index` | **not supported** |
-| CSS `transform` (outside `@keyframes`), `opacity`, `overflow`, `text-transform`, `visibility` | **not supported** (use `rgba` for alpha) |
-| CSS `@media`, `@font-face` (Mode A) | **not supported** — register fonts via `FontRegistry` in code |
-| SVG `<text>`, gradients, patterns, clip paths, filters; path `A` arc | **not supported** (arc → line) |
-| Mode B gradients / box-shadow / backdrop-blur / animation | **partial** — via `.style()` only |
-| Mode B PDF/UA tagging | **partial** — headings only (Mode A is full) |
+| CSS `position` / `float` / `top/left/right/bottom` / `z-index` | **not supported (Currently working on this)** |
+| CSS `transform` (outside `@keyframes`), `opacity`, `overflow`, `text-transform`, `visibility` | **not supported (Currently working on this)** (use `rgba` for alpha) |
+| CSS `@media`, `@font-face` (Mode A) | **not supported (Currently working on this)** — register fonts via `FontRegistry` in code |
+| SVG `<text>`, gradients, patterns, clip paths, filters; path `A` arc | **not supported (Currently working on this)** (arc → line) |
+| Mode B gradients / box-shadow / backdrop-blur / animation | **partial (Currently working on this)** — via `.style()` only |
+| Mode B PDF/UA tagging | **partial (Currently working on this)** — headings only (Mode A is full) |
 | Redaction | **visual only** (no content removal) |
 | Encryption / digital signatures | **out of scope** (SPI hook only) |
-| Bidi / complex-script shaping (Arabic/Indic/Thai) | **not implemented** (Latin/CJK + hyphenation only) |
+| Bidi / complex-script shaping (Arabic/Indic/Thai) | **not implemented (Currently working on this)** (Latin/CJK + hyphenation only) |
 | Generic (non-DITA) XML → PDF | **bridge only** — transform to HTML/Mode B |
 | Fonts | **TrueType only** (no CFF/OTF outlines); none bundled |
 
