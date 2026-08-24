@@ -1,5 +1,104 @@
 # 15 — Mode A and Mode B: complete syntax reference
 
+15-mode-a-and-mode-b-syntax.md
+
+1. Overview
+2. Mode A — Markup
+   2.1 HTML
+   2.2 Document structure
+   2.3 Supported HTML elements
+   2.4 Attributes
+   2.5 CSS
+   2.6 @page
+   2.7 Layout
+       - block
+       - inline
+       - flex
+       - grid
+       - multi-column
+       - tables
+   2.8 Typography
+   2.9 Colors
+   2.10 Borders
+   2.11 Gradients
+   2.12 Shadows
+   2.13 Blur / backdrop effects
+   2.14 Modern UI designs
+       - glassmorphism
+       - liquid-glass-style layouts
+   2.15 Images
+   2.16 SVG
+   2.17 Lists
+   2.18 Tables
+   2.19 Links
+   2.20 Forms
+   2.21 Barcodes
+   2.22 Keyframes / animation
+
+3. XML Syntax
+   3.1 XML structure
+   3.2 Elements
+   3.3 Attributes
+   3.4 XML → document model
+
+4. DITA
+   4.1 DITA topics
+   4.2 Topic types
+   4.3 Supported elements
+   4.4 Attributes
+   4.5 keyref
+   4.6 Generated TOC
+
+5. DITA Maps
+   5.1 map
+   5.2 topicref
+   5.3 nested topicref
+   5.4 topic resolution
+   5.5 topic linearization
+   5.6 ordering
+   5.7 generated document
+
+6. Mode B — Java API
+   6.1 Document
+   6.2 PageSpec
+   6.3 Paragraph
+   6.4 Table
+   6.5 Images
+   6.6 SVG
+   6.7 Barcode
+   6.8 Styling
+   6.9 Layout
+   6.10 Forms
+
+7. PDF Features
+   7.1 PDF/A-2b
+   7.2 PDF/UA-1
+   7.3 AcroForm
+   7.4 Merge
+   7.5 Optimize
+   7.6 Linearize
+   7.7 Redaction
+
+8. Rendering & Viewer Compatibility
+   8.1 PDF output
+   8.2 Adobe Acrobat
+   8.3 Browser PDF viewers
+   8.4 Viewer-dependent features
+
+9. Concurrency & Scalability
+   9.1 Engine lifecycle
+   9.2 Worker pool
+   9.3 Virtual-thread I/O
+   9.4 Backpressure
+   9.5 Queue configuration
+   9.6 Cancellation
+   9.7 Streaming
+   9.8 Caching
+
+10. Security-related syntax
+11. Unsupported / partial syntax
+12. Complete syntax matrix
+
 There is **one engine** and **one box tree**. You can drive it two ways:
 
 | | **Mode A — markup** | **Mode B — programmatic** |
