@@ -590,8 +590,8 @@ RenderRequest.of(html).resources(sslSafeLoader).limits(strictLimits).build();
 | CSS `transform` (outside `@keyframes`), `opacity`, `overflow`, `text-transform`, `visibility` | **not supported (Currently working on this)** (use `rgba` for alpha) |
 | CSS `@media`, `@font-face` (Mode A) | **not supported (Currently working on this)** — register fonts via `FontRegistry` in code |
 | SVG `<text>`, gradients, patterns, clip paths, filters; path `A` arc | **not supported (Currently working on this)** (arc → line) |
-| Mode B gradients / box-shadow / backdrop-blur / animation | **partial (Currently working on this)** — via `.style()` only |
-| Mode B PDF/UA tagging | **partial (Currently working on this)** — headings only (Mode A is full) |
+| Mode B gradients / box-shadow / backdrop-blur / animation | **partial** — via `.style()` only |
+| Mode B PDF/UA tagging | **partial** — headings only (Mode A is full) |
 | Redaction | **visual only** (no content removal) |
 | Encryption / digital signatures | **out of scope** (SPI hook only) |
 | Bidi / complex-script shaping (Arabic/Indic/Thai) | **not implemented (Currently working on this)** (Latin/CJK + hyphenation only) |
