@@ -34,7 +34,7 @@ read / merge / optimize / redact / tag existing PDFs. All original clean‑room 
 - [Deploy on Azure / AWS / AEM](#deploy-on-azure--aws--aem)
 - [Security](#security)
 - [Feature matrix](#feature-matrix)
-- [Limitations (honest)](#limitations-honest)
+- [Limitations (honest)](#Limitations)
 - [Get the jar](#get-the-jar)
 - [Open source — fork & modify](#open-source--fork--modify)
 - [Contributing](#contributing)
