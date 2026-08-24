@@ -62,30 +62,44 @@ source to your needs.
 
 ## How it compares
 
-Honest, qualitative comparison (exact numbers vary by workload):
+ePDF is positioned differently from low-level PDF libraries and browser-based
+HTML-to-PDF solutions. The comparison below focuses on architectural trade-offs,
+not on declaring one solution universally better than another.
 
-| | **epdf‑org** | **iText 8** | **Apache PDFBox** | **Headless Chromium**<br/>(Puppeteer/Playwright) |
+| Capability | **ePDF** | **iText / similar PDF libraries** | **Apache PDFBox** | **Headless Chromium** |
 |---|---|---|---|---|
-| **License** | Permissive OSS | AGPLv3 / paid commercial | Apache‑2.0 | BSD‑style (browser) |
-| **Third‑party deps** | **none** | several | a few | **huge** (full browser + Node) |
-| **HTML/CSS → PDF** | ✅ built‑in (both modes) | add‑on (pdfHTML, AGPL/paid) | ❌ low‑level only | ✅ browser‑grade |
-| **Programmatic PDF** | ✅ fluent `api.doc` | ✅ | ✅ very low‑level | ❌ |
-| **Artifact size** | **~0.5 MB jar** | several MB | a few MB | **hundreds of MB** (browser) |
-| **Runtime footprint** | in‑JVM, ~page working set | in‑JVM | in‑JVM | **separate process, ~100s MB each** |
-| **Per‑PDF cost** | low (in‑process, pooled) | low | low | **high** (process/cold‑start/RAM) |
-| **CSS fidelity** | modern subset (grid/flex/…) | via pdfHTML | n/a | **highest** (real browser) |
-| **Built‑in scale model** | ✅ bounded pool + backpressure | DIY | DIY | orchestrate a browser pool yourself |
-| **Forms / PDF‑A / UA / barcodes** | ✅ built‑in | add‑ons / paid | partial | via browser/plugins |
-| **Ops complexity** | **one jar** | license management | low | **high** (browser deps, sandbox, updates) |
+| Primary approach | Document rendering engine | PDF/document library | Low-level PDF library | Browser rendering |
+| Runs inside the JVM | ✅ | ✅ | ✅ | ❌ separate browser process |
+| Zero third-party runtime dependencies | ✅ | ❌ | ❌ | ❌ |
+| Programmatic document API | ✅ | ✅ | ⚠️ lower-level | ❌ browser-oriented |
+| HTML/CSS document authoring | ✅ | Product/module dependent | ❌ not native HTML layout | ✅ |
+| XML / DITA publishing workflow | ✅ | Custom implementation / product dependent | Custom implementation | Custom preprocessing |
+| CSS-driven layout | ✅ supported subset | Product/module dependent | ❌ | ✅ highest browser compatibility |
+| Flex / grid / document layouts | ✅ | Product dependent | Manual implementation | ✅ browser implementation |
+| Structured PDF generation | ✅ | ✅ | ✅ | Via browser print pipeline |
+| Built-in document processing pipeline | ✅ | Varies by product/modules | Mostly application-built | Browser-managed |
+| Built-in concurrency / backpressure model | ✅ | Application responsibility | Application responsibility | Browser-pool orchestration |
+| PDF manipulation toolkit | Merge, optimize, linearize, visual redact, forms | Broad | Broad | Limited / external tooling |
+| Runtime model | Single JVM library | JVM library | JVM library | Browser + automation/runtime |
+| Operational footprint | Small in-process deployment | JVM dependency stack | JVM dependency stack | Full browser runtime |
+| CSS fidelity | Document-oriented subset | Product dependent | n/a | Highest |
+| Cryptography | ❌ intentionally outside core | Product dependent | Product dependent | Not a core browser-PDF feature |
 
-**The render‑cost trade‑off:** headless Chromium gives the **best CSS fidelity**,
-but every render drives a **full browser** — hundreds of MB of RAM per instance,
-process/cold‑start overhead, a security sandbox to operate, and a browser to keep
-patched. **epdf‑org renders in‑JVM as a library** with a tiny footprint and a
-built‑in scale model — you trade some CSS breadth for **lower cost, simpler ops,
-and a smaller attack surface**. Against **iText**, the wins are the **permissive
-license** (no AGPL/commercial fees) and **zero dependencies**; against **PDFBox**,
-it's **built‑in HTML/CSS + layout** instead of hand‑placing every glyph.
+### The trade-off
+
+**Choose ePDF when** you want an in-JVM, zero-dependency document engine with
+structured HTML/CSS/XML/DITA workflows, programmatic Java authoring, built-in
+layout and rendering, and an internal model for concurrent document generation.
+
+**Choose a browser renderer when** exact browser CSS/HTML behavior is more
+important than runtime footprint and operating a browser process is acceptable.
+
+**Choose a low-level PDF library when** your application needs direct control
+over PDF objects or requires features outside ePDF's document-rendering scope.
+
+**Choose based on your workload.** ePDF does not try to be a complete web browser
+or a replacement for every mature PDF toolkit; its goal is to provide a compact,
+structured, extensible PDF engine with modern document-layout capabilities.
 
 ---
 
@@ -134,20 +148,25 @@ byte[] filled  = FormFiller.fill(pdf, Map.of("name","Ada"));
 
 ---
 
-## The two modes
+## Authoring modes
 
-There is **one engine** and **one internal box tree**; you drive it two ways.
+ePDF provides two ways to create the same internal document model:
 
-- **Mode A — Markup.** Page size, margins, styling, layout in **HTML/CSS** (also
-  XML/DITA, SVG). Best for *presentation*.
-- **Mode B — Programmatic.** Build the document with **Java function calls**. Best
-  for *code‑driven generation* and for anything a document must **not** control.
+- **Mode A — Markup:** HTML/CSS, XML/DITA and SVG-based document authoring.
+- **Mode B — Java API:** fluent programmatic document construction.
 
-Page size, margins and layout work in **either** mode. Security/operational
-controls (debug, resource limits, network policy, fonts from disk, threads) are
-**host‑only** (Mode B). *Mode A = what the document looks like; Mode B = what the
-engine is allowed to do.* Full syntax: **[docs/15](docs/15-mode-a-and-mode-b-syntax.md)**.
+Both modes use the same rendering engine and converge on the same internal
+layout and box model.
 
+Use the mode that best fits your application:
+
+- Choose **Mode A** for template-driven, markup-based and structured publishing workflows.
+- Choose **Mode B** for code-driven document generation and programmatic control.
+
+For the complete syntax, supported elements, attributes, CSS capabilities,
+XML/DITA support and examples, see:
+
+**[Mode A & Mode B Syntax Guide](docs/15-mode-a-and-mode-b-syntax.md)**
 ---
 
 ## How it works
@@ -325,48 +344,91 @@ Security is a **design property**, not an add‑on:
 > underlying text/images — do not rely on it to strip extractable data.
 
 ---
-
 ## Feature matrix
 
-| Capability | Mode A | Mode B | Toolkit |
-|---|:--:|:--:|:--:|
-| Page size / margins from source | ✅ `@page` | ✅ `Document.of…margins` | — |
-| Flex / grid / multi‑column | ✅ | ✅ | — |
-| Tables (spans, zebra, repeating header) | ✅ | ✅ | — |
-| Lists · images · SVG · barcodes (QR/Code128/39/EAN‑13/DataMatrix) | ✅ | ✅ | — |
-| Gradients / shadow / blur / animation | ✅ | ⚠️ basic | — |
-| Embedded fonts + subsetting + per‑codepoint fallback | ✅ | ✅ | — |
-| Forms → AcroForm, fill & flatten | ✅ | ✅ | ✅ |
-| PDF/A‑2b + PDF/UA‑1 tagging | ✅ | ⚠️ headings | — |
-| XML / DITA publishing (topics, maps, keyref) | ✅ | — | — |
-| Merge / split · optimize / linearize · redact (visual) | — | — | ✅ |
-| Async · streaming · backpressure · metrics | ✅ | ✅ | — |
-| Debug tracing (host‑enabled) | ✅ | ✅ | — |
+| Capability | Support |
+|---|---|
+| HTML document authoring | ✅ |
+| CSS styling | ✅ supported subset |
+| XML document processing | ✅ |
+| DITA topics | ✅ |
+| DITA maps | ✅ |
+| Topic linearization | ✅ |
+| SVG | ✅ |
+| Page size and margins | ✅ |
+| Block / inline layout | ✅ |
+| Flex layouts | ✅ |
+| Grid layouts | ✅ |
+| Multi-column layouts | ✅ |
+| Tables | ✅ |
+| Lists | ✅ |
+| Images | ✅ |
+| Gradients | ✅ |
+| Shadows | ✅ |
+| Blur / modern visual effects | ✅ supported rendering features |
+| Keyframe / animation processing | See syntax documentation |
+| Embedded fonts | ✅ |
+| Font subsetting | ✅ |
+| Font fallback | ✅ |
+| Barcodes | QR, Code128, Code39, EAN-13, DataMatrix |
+| PDF forms / AcroForm | ✅ |
+| Form filling / flattening | ✅ |
+| PDF/A-2b | ✅ |
+| PDF/UA-1 tagging | ✅, capability varies by document/mode |
+| Merge / split | ✅ |
+| Optimization | ✅ |
+| Linearization / fast web view | ✅ |
+| Redaction | ⚠️ visual redaction |
+| Concurrent rendering | ✅ |
+| Bounded worker execution | ✅ |
+| Backpressure | ✅ |
+| Streaming output | ✅ |
+| Metrics / runtime statistics | ✅ |
+| Built-in encryption | ❌ |
+| Built-in digital signatures | ❌ |
 
-⚠️ = supported at a basic level; the other mode is richer.
+> For exact syntax and implementation details, including supported HTML elements,
+> XML/DITA structures, CSS properties, layout rules, keyframes and Mode A/Mode B
+> APIs, see the [complete syntax documentation](docs/15-mode-a-and-mode-b-syntax.md).
 
 ---
 
-## Limitations (honest)
+## Limitations
 
-We're **not** trying to out‑feature iText or PDFBox — those are older, broader and
-battle‑tested on millions of documents. Be clear‑eyed about the trade‑offs:
+ePDF is a document-rendering engine and intentionally does not attempt to
+implement every capability of a web browser, PDF editor or general-purpose
+commercial PDF platform.
 
-- **Younger & smaller** — single‑author, far less edge‑case hardening, no commercial support/SLA.
-- **No cryptography** — no encryption or digital signatures (by design; SPI hook only).
-- **Complex‑script shaping** — bidi / Arabic / Indic / Thai shaping isn't implemented yet (Latin/CJK basics + hyphenation work).
-- **CSS is a modern subset**, not a full browser — very advanced/edge CSS may differ from Chromium.
-- **Redaction is visual‑only** (opaque bars), not content removal.
-- **PDF/UA tagging** is richest in Mode A; Mode B tags headings only.
-- **Requires Java 21** to run (mitigated by the microservice pattern).
-- **Fonts:** TrueType only (no CFF/OTF outlines); none bundled — you supply them.
+- **No cryptography** — PDF encryption, digital signatures and cryptographic key
+  management are outside the core engine by design. Integration is available
+  through the SPI boundary where required.
 
-**Where we're genuinely good:** modern design & layout in **HTML/CSS** (flex, grid,
-multi‑column, gradients, shadow, backdrop‑blur, animation), the same via **fluent
-Java**, **XML/DITA publishing** (topics **and maps** with `keyref` + generated TOC),
-forms → AcroForm, barcodes, SVG, PDF/A‑2b + PDF/UA‑1, optimize/linearize — all
-**zero‑dependency, permissively licensed, and scalable out of the box**.
+- **CSS is a supported rendering subset** — ePDF is not a full browser engine.
+  Advanced or browser-specific CSS behavior may differ from Chromium and other
+  browser renderers.
 
+- **PDF viewer compatibility** — some advanced PDF behavior may depend on the
+  capabilities of the viewer. Adobe Acrobat/Reader-specific behavior should not
+  be assumed to work identically in browser viewers or every third-party reader.
+
+- **Complex-script shaping** — bidi and advanced shaping for scripts such as
+  Arabic, Indic and Thai may have limitations depending on the current text
+  pipeline. See the font and internationalization documentation for the exact
+  supported behavior.
+
+- **Redaction** — current visual redaction covers content with an opaque region;
+  it should not be treated as secure content removal unless the underlying PDF
+  objects are removed.
+
+- **PDF/UA tagging** — accessibility tagging capability varies by authoring mode
+  and document structure.
+
+- **Java 21 runtime** — ePDF requires Java 21 to run. Applications on older JVMs
+  can integrate through a separate Java 21 service.
+
+- **Font support** — supported font formats and embedding behavior are described
+  in the font documentation. Applications provide their own fonts; no font files
+  are bundled with the engine.
 ---
 
 ## Get the jar
