@@ -24,7 +24,7 @@ read / merge / optimize / redact / tag existing PDFs. All original clean‑room 
 - [Why epdf‑org](#why-epdf-org)
 - [How it compares (iText · PDFBox · headless Chromium)](#how-it-compares)
 - [Quick start](#quick-start)
-- [The two modes (A & B)](#the-two-modes)
+- [The two modes (A & B)](#Authoring-modes)
 - [How it works](#how-it-works)
 - [Architecture for organizations](#architecture-for-organizations)
 - [Use it from Java 11 / 17 / any language](#use-it-from-java-11--17--any-language)
